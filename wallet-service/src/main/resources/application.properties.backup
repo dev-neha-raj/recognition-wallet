@@ -1,0 +1,8 @@
+spring.application.name=wallet-service
+
+# Temporary - DB comes in week 3-4
+spring.autoconfigure.exclude=\
+org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration,\
+org.springframework.boot.jdbc.autoconfigure.DataSourceTransactionManagerAutoConfiguration,\
+org.springframework.boot.data.jdbc.autoconfigure.DataJdbcRepositoriesAutoConfiguration,\
+org.springframework.boot.liquibase.autoconfigure.LiquibaseAutoConfiguration
