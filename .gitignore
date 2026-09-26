@@ -1,10 +1,23 @@
+# =========================
+# Maven / Build output
+# =========================
 HELP.md
 target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+build/
+*.jar
+*.war
 
-### STS ###
+# Keep Maven Wrapper JAR
+!**/.mvn/wrapper/maven-wrapper.jar
+
+# =========================
+# Maven Wrapper
+# =========================
+.mvn/wrapper/maven-wrapper.jar
+
+# =========================
+# STS / Eclipse
+# =========================
 .apt_generated
 .classpath
 .factorypath
@@ -13,21 +26,50 @@ target/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
+# =========================
+# IntelliJ IDEA
+# =========================
 .idea
 *.iws
 *.iml
 *.ipr
 
-### NetBeans ###
+# =========================
+# NetBeans
+# =========================
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-### VS Code ###
+# =========================
+# VS Code
+# =========================
 .vscode/
+
+# =========================
+# Editors
+# =========================
+*.swp
+
+# =========================
+# OS noise
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs & temp
+# =========================
+*.log
+*.tmp
+
+# =========================
+# Local config & secrets
+# =========================
+.env
+*.env
+application-local.properties
+application-local.yml
+secrets*.properties
