@@ -1,14 +1,20 @@
 package dev.recognitionwallet.wallet.service.store;
 
 import dev.recognitionwallet.wallet.common.model.Wallet;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * In-memory WalletStore. Not a spring bean since M8; kept as a fast fake for tests;
+ * 
+ * Two maps: one by wallet id, one by employeeId(the uniquesness index). Enrollment claims the 
+ * employee slot with putIfAbsent, so a race between two identical saves yields exactly one winner.
+ * 
+ */
 
-@Repository
+
 public class InMemoryWalletStore implements WalletStore{
 
 private final ConcurrentHashMap<UUID, Wallet> byId = new ConcurrentHashMap<>();
