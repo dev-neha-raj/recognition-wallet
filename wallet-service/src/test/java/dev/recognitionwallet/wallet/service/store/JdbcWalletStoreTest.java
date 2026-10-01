@@ -2,15 +2,12 @@ package dev.recognitionwallet.wallet.service.store;
 
 import dev.recognitionwallet.wallet.common.model.Wallet;
 import dev.recognitionwallet.wallet.common.model.WalletStatus;
+import dev.recognitionwallet.wallet.service.TestcontainersConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Import;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -18,16 +15,11 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@Testcontainers
+
 @DataJdbcTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(JdbcWalletStore.class)
+@Import({JdbcWalletStore.class, TestcontainersConfiguration.class})
 class JdbcWalletStoreTest {
-
-    @Container
-    @ServiceConnection
-    static PostgreSQLContainer<?> postgres =
-            new PostgreSQLContainer<>("postgres:16");
 
     @Autowired
     JdbcWalletStore store;
@@ -72,18 +64,17 @@ class JdbcWalletStoreTest {
                 .isEmpty();
     }
 /**
- @Test
-void secondWalletForSameEmployeeIsRejectedByDatabase() {
-    store.save(Wallet.enrollProduct("emp-3", CREATED));
-
-    assertThatThrownBy(() ->
-            store.save(Wallet.enrollProduct("emp-3", CREATED))
-    )
-            .isInstanceOf(WalletAlreadyExistsException.class)
-            .hasMessageContaining("emp-3");
-}
-**/
-
+ * @Test
+ * void secondWalletForSameEmployeeIsRejectedByDatabase() {
+ *     store.save(Wallet.enrollProduct("emp-3", CREATED));
+ * 
+ *     assertThatThrownBy(() ->
+ *             store.save(Wallet.enrollProduct("emp-3", CREATED))
+ *     )
+ *             .isInstanceOf(WalletAlreadyExistsException.class)
+ *             .hasMessageContaining("emp-3");
+ * }
+ **/
 
     @Test
     void rowIsStoredWithExpectedColumnValues() {

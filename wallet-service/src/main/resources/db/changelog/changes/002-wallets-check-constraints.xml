@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="002a-wallets-status-check" author="recognition-wallet">
+    <comment> Only statuses the application undersands may be stored. </comment>
+        <sql>
+            ALTER TABLE wallets
+            ADD CONSTRAINT chk_wallets_status
+            CHECK (status IN ('ACTIVE', 'CLOSED'));
+        </sql>
+        <rollback>
+            ALTER TABLE wallets
+            DROP CONSTRAINT chk_wallets_status;
+        </rollback>
+    </changeSet>
+<changeSet id="002b-wallets-closed-fields-check" author="recognition-wallet">
+    <comment> Closed reason is only required when a wallet is closed. </comment>
+        <sql>
+            ALTER TABLE wallets
+            ADD CONSTRAINT chk_wallets_closed_fields
+            CHECK (
+                (status = 'CLOSED' AND closed_at IS NOT NULL AND closed_reason IS NOT NULL)
+                OR
+                (status = 'ACTIVE' AND closed_at IS NULL AND closed_reason IS NULL)
+            )
+        </sql>
+        <rollback>
+            ALTER TABLE wallets
+            DROP CONSTRAINT chk_wallets_closed_fields;
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
