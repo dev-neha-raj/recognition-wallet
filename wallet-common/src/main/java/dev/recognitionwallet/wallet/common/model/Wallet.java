@@ -3,6 +3,7 @@ package dev.recognitionwallet.wallet.common.model;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
+import java.time.temporal.ChronoUnit;
 /**
  * Represents a wallet for an employee.
  * 
@@ -16,7 +17,7 @@ import java.util.UUID;
  * 
  * Immutable  - every state transition(e.g., close) returns a new instance of the wallet.
  * The two-org 'enroll(String, Instant)' factory is preferred in tests for determinism;
- * the single-org defers to 'Instance.now()' for convience in production code.
+ * the single-org defers to 'Instant.now().truncatedTo(ChronoUnit.MICROS)' for convience in production code.
  */
 
 public record Wallet(
@@ -42,7 +43,7 @@ public static Wallet enrollProduct(String employeeId, Instant createdAt){
 }
 
 public static Wallet enrollProduct(String employeeId){
-    return enrollProduct(employeeId, Instant.now());
+    return enrollProduct(employeeId, Instant.now().truncatedTo(ChronoUnit.MICROS));
 }
 
 public Wallet close(Instant closedAt, String reason){

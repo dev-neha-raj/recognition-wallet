@@ -2,10 +2,11 @@ package dev.recognitionwallet.wallet.service.store;
 
 import dev.recognitionwallet.wallet.common.model.Wallet;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
+import org.springframework.data.relational.core.conversion.DbActionExecutionException;
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,6 +27,11 @@ public class JdbcWalletStore implements WalletStore {
     public Wallet save(Wallet wallet) {
         try {
             template.insert(WalletRowMapper.toRow(wallet));
+        } catch (DbActionExecutionException e) {
+            if (isDuplicateKey(e)) {
+                throw new WalletAlreadyExistsException(wallet.employeeId());
+            }
+            throw e;
         } catch (DataAccessException e) {
             if (isDuplicateKey(e)) {
                 throw new WalletAlreadyExistsException(wallet.employeeId());
@@ -42,16 +48,13 @@ public class JdbcWalletStore implements WalletStore {
                 .map(WalletRowMapper::toDomain);
     }
 
-    /**
-     * Spring Data JDBC can wrap DuplicateKeyException inside
-     * DbActionExecutionException, so walk the complete cause chain.
-     */
     static boolean isDuplicateKey(Throwable t) {
         for (Throwable cause = t;
              cause != null;
              cause = cause.getCause()) {
 
-            if (cause instanceof DuplicateKeyException) {
+            if (cause instanceof SQLException sqlException
+                    && "23505".equals(sqlException.getSQLState())) {
                 return true;
             }
         }

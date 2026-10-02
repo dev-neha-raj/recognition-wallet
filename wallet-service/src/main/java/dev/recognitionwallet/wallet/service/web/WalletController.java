@@ -50,7 +50,7 @@ public ResponseEntity<WalletResponse> enroll(
     URI location = URI.create("/wallets/" + saved.id());
 
     return ResponseEntity.created(location).body(body);
-};
+}
 
 @GetMapping("/{id}")
 public WalletResponse getById(@PathVariable UUID id){
