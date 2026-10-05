@@ -1,0 +1,20 @@
+#shared settings, loaded in every environment
+#Environmment specific values (database URL, credentials, hosts) lives in application-{profile}.yml files, where {profile} is the name of the environment (dev, test, prod, etc.)
+#or come from environment variables. There is deliberately no datasource URL here(fail-fast).
+spring: 
+  application:
+    name: wallet-service
+  datasource:
+    hikari:
+      pool-name: wallet-pool
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+  mvc:
+    problemdetails:
+      enabled: true

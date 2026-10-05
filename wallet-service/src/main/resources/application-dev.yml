@@ -1,0 +1,7 @@
+#docker-compose environment on the development box(see docker-compose.yml at the repo root).
+#There are throwaway local-container credentials, not secrets. 
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/recognition_wallet
+    username: wallet
+    password: wallet
