@@ -5,3 +5,5 @@ spring:
     url: jdbc:postgresql://localhost:5432/recognition_wallet
     username: wallet
     password: wallet
+  kafka:
+    bootstrap-servers: localhost:9092

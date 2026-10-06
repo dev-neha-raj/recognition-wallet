@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
  */
 
 @SpringBootTest
-@Import(TestcontainersConfiguration.class)
+@Import({TestcontainersConfiguration.class, MessagingTestcontainersConfiguration.class})
 class WalletServiceApplicationTests {
 
     @Test

@@ -18,3 +18,9 @@ spring:
   mvc:
     problemdetails:
       enabled: true
+
+wallet:
+  kafka:
+    topics:
+      partitions: 3
+      replicas: 1
