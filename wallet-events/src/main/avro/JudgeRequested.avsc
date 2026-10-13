@@ -1,0 +1,16 @@
+{
+"type": "record",
+"name": "JudgeRequested",
+"namespace": "dev.recognitionwallet.wallet.events.v1",
+"doc": "An AI-usage event accepted by POST /grants. kafka key: employeeId",
+"fields": [
+    {"name": "sourceEventId", "type": "string"},
+    {"name": "employeeId", "type": "string"},
+    {"name": "occurredAt", "type": {"type":"long", "logicalType":"timestamp-millis"}},
+    {"name": "promptText", "type": "string"},
+    {"name": "acceptanceRatio", "type": "double"},
+    {"name": "followUpCount", "type": "int"},
+    {"name": "timeToAcceptanceSeconds", "type": "long"},
+    {"name": "requestedAt", "type": {"type": "long", "logicalType":"timestamp-millis"}}
+    ]
+}

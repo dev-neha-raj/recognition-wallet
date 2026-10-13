@@ -1,0 +1,18 @@
+{
+"type": "record",
+"name": "AiUsageIngested",
+"namespace": "dev.recognitionwallet.wallet.events.v1",
+"doc": "An AI-usage event accepted by POST /grants. kafka key: employeeId",
+"fields": [
+    {"name": "sourceEventId", "type": "string", "doc": "unique if from the source tool. Idempotency key for the whole pipeline."},
+    {"name": "employeeId", "type": "string"},
+    {"name": "sourceTool", "type": "string"},
+    {"name": "eventKind", "type": "string"},
+    {"name": "occurredAt", "type": {"type":"long", "logicalType":"timestamp-millis"}},
+    {"name": "ingestedAt", "type": {"type":"long", "logicalType":"timestamp-millis"}},
+    {"name": "promptText", "type": "string"},
+    {"name": "acceptanceRatio", "type": ["null", "double"], "default": null, "doc": "0.0-1.0. Null if the pool didn't report it(the rule filter rejects incomplete events)."},
+            {"name": "followUpCount", "type": ["null", "int"], "default": null},
+            {"name": "timeToAcceptanceSeconds", "type": ["null", "long"], "default": null}
+    ]
+}

@@ -1,0 +1,18 @@
+{
+  "type": "record",
+  "name": "RewardDrawn",
+  "namespace": "dev.recognitionwallet.wallet.events.v1",
+  "doc": "The final reward outcome for an event. Published only by the reward worker. Kafka key: employeeId.",
+  "fields": [
+    {"name": "sourceEventId", "type": "string"},
+    {"name": "employeeId", "type": "string"},
+    {"name": "occurredAt", "type": {"type": "long", "logicalType": "timestamp-millis"}},
+    {"name": "outcomeType", "type": "string", "doc": "NO_REWARD | MICRO | SMALL | MEDIUM | LARGE | JACKPOT | CLIPPED_BY_ANNUAL_CAP"},
+    {"name": "pointsAwarded", "type": "int"},
+    {"name": "pointsWouldHaveBeen", "type": ["null", "int"], "default": null, "doc": "set only for CLIPPED_BY_ANNUAL_CAP"},
+    {"name": "qualityTier", "type": ["null", "string"], "default": null, "doc": "EXCELLENT | GOOD | PASSABLE | WEAK, when scored"},
+    {"name": "composite", "type": ["null", "double"], "default": null},
+    {"name": "reason", "type": ["null", "string"], "default": null, "doc": "set only for NO_REWARD"},
+    {"name": "drawnAt", "type": {"type": "long", "logicalType": "timestamp-millis"}}
+  ]
+}

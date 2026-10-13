@@ -1,0 +1,20 @@
+{
+  "type": "record",
+  "name": "QualityScored",
+  "namespace": "dev.recognitionwallet.wallet.events.v1",
+  "doc": "The quality stage's final verdict for an event. kafka key: employeeId",
+  "fields": [
+    {"name": "sourceEventId", "type": "string"},
+    {"name": "employeeId", "type": "string"},
+    {"name": "occurredAt", "type": {"type": "long", "logicalType": "timestamp-millis"}},
+    {"name": "verdict", "type": "string", "doc": "SCORED | FILTER_FAILED | JUDGE_UNAVAILABLE"},
+    {"name": "precision", "type": ["null", "int"], "default": null},
+    {"name": "context", "type": ["null", "int"], "default": null},
+    {"name": "clarity", "type": ["null", "int"], "default": null},
+    {"name": "efficiency", "type": ["null", "int"], "default": null},
+    {"name": "feedback", "type": ["null", "string"], "default": null, "doc": "coaching text from the judge"},
+    {"name": "judgeModel", "type": ["null", "string"], "default": null, "doc": "Exact model id used, for audit"},
+    {"name": "reason", "type": ["null", "string"], "default": null, "doc": "set when verdict != SCORED, e.g. FILTER_FAILED: PROMPT_TOO_SHORT"},
+    {"name": "decidedAt", "type": {"type": "long", "logicalType": "timestamp-millis"}}
+  ]
+}
