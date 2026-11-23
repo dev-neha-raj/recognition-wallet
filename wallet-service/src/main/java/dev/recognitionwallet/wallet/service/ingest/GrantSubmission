@@ -1,0 +1,17 @@
+package dev.recognitionwallet.wallet.service.ingest;
+
+import java.time.Instant;
+
+public record GrantSubmission(
+
+/// An incoming grant event, independent of the HTTP DTO. The web layer maps RecordGrantRequest to this.
+String sourceEventId,
+String employeeId,
+String sourceTool,
+String eventKind,
+Instant occurredAt,
+String promptText,
+Double acceptanceRatio,
+Integer followUpCount,
+Long timeToAcceptanceSeconds
+){}

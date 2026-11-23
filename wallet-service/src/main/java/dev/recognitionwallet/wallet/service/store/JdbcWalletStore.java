@@ -28,12 +28,12 @@ public class JdbcWalletStore implements WalletStore {
         try {
             template.insert(WalletRowMapper.toRow(wallet));
         } catch (DbActionExecutionException e) {
-            if (isDuplicateKey(e)) {
+            if (DuplicateKeys.isDuplicateKey(e)) {
                 throw new WalletAlreadyExistsException(wallet.employeeId());
             }
             throw e;
         } catch (DataAccessException e) {
-            if (isDuplicateKey(e)) {
+            if (DuplicateKeys.isDuplicateKey(e)) {
                 throw new WalletAlreadyExistsException(wallet.employeeId());
             }
             throw e;
@@ -48,17 +48,9 @@ public class JdbcWalletStore implements WalletStore {
                 .map(WalletRowMapper::toDomain);
     }
 
-    static boolean isDuplicateKey(Throwable t) {
-        for (Throwable cause = t;
-             cause != null;
-             cause = cause.getCause()) {
-
-            if (cause instanceof SQLException sqlException
-                    && "23505".equals(sqlException.getSQLState())) {
-                return true;
-            }
-        }
-
-        return false;
+    @Override
+    public Optional<Wallet> findByEmployeeId(String employeeId) {
+        return repository.findByEmployeeId(employeeId)
+                .map(WalletRowMapper::toDomain);
     }
 }

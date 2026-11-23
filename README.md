@@ -7,3 +7,8 @@ built as a hand-on learning project to practice clean architecture, domain model
 
 Employees earn recognition points that accrue into a personal wallet; points can later convert to a 
 cash-equivalent payout. 
+
+### start an application 
+
+./mvnw -pl wallet-service spring-boot:run -Dspring-boot.run.profiles=dev 
+

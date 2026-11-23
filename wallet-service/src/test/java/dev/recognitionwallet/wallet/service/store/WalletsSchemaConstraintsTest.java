@@ -62,7 +62,9 @@ class WalletSchemaConstraintsTest {
         assertThat(ids).containsExactly(
                 "001-create-wallets",
                 "002a-wallets-status-check",
-                "002b-wallets-closed-fields-check"
+                "002b-wallets-closed-fields-check",
+                "003a-create-raw-events",
+                "003b-raw-events-employee-occurred-index"
         );
     }
 

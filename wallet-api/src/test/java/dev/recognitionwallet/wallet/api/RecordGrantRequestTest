@@ -1,0 +1,122 @@
+package dev.recognitionwallet.wallet.api;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import org.junit.jupiter.api.Test;
+
+import java.time.Instant;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class RecordGrantRequestTest {
+
+    private static final Validator VALIDATOR =
+            Validation.buildDefaultValidatorFactory().getValidator();
+
+    private static final Instant OCCURRED =
+            Instant.parse("2026-10-01T10:00:00Z");
+
+    private static RecordGrantRequest valid() {
+        return new RecordGrantRequest(
+                "gh-pr-1",
+                "emp-1",
+                "github-copilot",
+                "PR_MERGED",
+                OCCURRED,
+                "Fix line 42 of AuthService.java",
+                0.8,
+                1,
+                150L
+        );
+    }
+
+    private static Set<String> messages(RecordGrantRequest request) {
+        return VALIDATOR.validate(request).stream()
+                .map(ConstraintViolation::getMessage)
+                .collect(java.util.stream.Collectors.toSet());
+    }
+
+    @Test
+    void validRequestHasNoViolations() {
+        assertThat(VALIDATOR.validate(valid())).isEmpty();
+    }
+
+    @Test
+    void outcomeMetricsMayBeMissing() {
+        var request = new RecordGrantRequest(
+                "gh-pr-1",
+                "emp-1",
+                "github-copilot",
+                "PR_MERGED",
+                OCCURRED,
+                "x",
+                null,
+                null,
+                null
+        );
+
+        assertThat(VALIDATOR.validate(request)).isEmpty();
+    }
+
+    @Test
+    void blankSourceEventIdIsRejected() {
+        var request = new RecordGrantRequest(
+                " ",
+                "emp-1",
+                "github-copilot",
+                "PR_MERGED",
+                OCCURRED,
+                "x",
+                0.8,
+                1,
+                150L
+        );
+
+        assertThat(messages(request))
+                .contains("sourceEventId must not be blank");
+    }
+
+    @Test
+    void missingOccurredAtAndPromptAreRejected() {
+        var request = new RecordGrantRequest(
+                "gh-pr-1",
+                "emp-1",
+                "github-copilot",
+                "PR_MERGED",
+                null,
+                null,
+                0.8,
+                1,
+                150L
+        );
+
+        assertThat(messages(request))
+                .contains(
+                        "occurredAt is required",
+                        "promptText is required"
+                );
+    }
+
+    @Test
+    void outOfRangeMetricsAreRejected() {
+        var request = new RecordGrantRequest(
+                "gh-pr-1",
+                "emp-1",
+                "github-copilot",
+                "PR_MERGED",
+                OCCURRED,
+                "x",
+                1.5,
+                -1,
+                -5L
+        );
+
+        assertThat(messages(request)).contains(
+                "acceptanceRatio must be between 0 and 1",
+                "followUpCount must not be negative",
+                "timeToAcceptanceSeconds must not be negative"
+        );
+    }
+}

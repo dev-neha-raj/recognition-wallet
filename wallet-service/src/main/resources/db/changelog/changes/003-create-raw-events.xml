@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+<changeSet id = "003a-create-raw-events" author="recognition-wallet">
+    <comment>Every accepted POST /grants event, exactly as received. source_event_id is the idempotency key.</comment>
+    <createTable tableName = "raw_events">
+        <column name = "source_event_id" type="VARCHAR(128)">
+            <constraints nullable="false" />
+        </column>
+        <column name = "employee_id" type="VARCHAR(64)">
+            <constraints nullable="false" />        
+        </column>
+        <column name = "source_tool" type="VARCHAR(64)">
+            <constraints nullable="false" />
+        </column>
+        <column name = "event_kind" type="VARCHAR(64)" >
+            <constraints nullable="false" />
+        </column>
+        <column name = "occurred_at" type="TIMESTAMP WITH TIME ZONE">
+            <constraints nullable="false" />
+        </column>
+        <column name = "prompt_text" type="TEXT">
+            <constraints nullable="false" />
+        </column>
+        <column name = "acceptance_ratio" type="DOUBLE" />
+        <column name ="follow_up_count" type="INT" />
+        <column name = "time_to_acceptance_seconds" type="BIGINT" />
+        <column name = "ingested_at" type="TIMESTAMP WITH TIME ZONE">
+            <constraints nullable="false" />
+        </column>
+<!--Null until kafka confirms the publish; a retry republishes row still null.-->    
+        <column name="published_at" type="TIMESTAMP WITH TIME ZONE" />
+</createTable>
+</changeSet>
+
+<changeSet id = "003b-raw-events-employee-occured-index" author="recognition-wallet">
+    <comment>Supports the rule filter's "same employee, last hour" near-duplicate lookup</comment>
+    <createIndex indexName="ix_raw_events_employee_occured" tableName="raw_events">
+        <column name="employee_id"/>
+        <column name="occurred_at" />    
+    </createIndex>
+</changeSet>
+
+</databaseChangeLog>

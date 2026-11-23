@@ -14,6 +14,7 @@ public interface WalletStore{
 Wallet save(Wallet wallet);
 
 Optional<Wallet> findById(UUID id);
+Optional<Wallet> findByEmployeeId(String employeeId);
 
 
 }

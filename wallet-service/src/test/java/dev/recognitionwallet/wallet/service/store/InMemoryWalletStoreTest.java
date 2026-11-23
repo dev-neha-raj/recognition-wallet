@@ -36,6 +36,13 @@ class InMemoryWalletStoreTest {
     }
 
     @Test
+    void findByEmployeeIdReturnsThatEmployeesWallet(){
+        Wallet wallet = store.save(Wallet.enroll("emp-9", Instant.parse("2026-09-20T10:00:00Z")));
+        assertThat(store.findByEmployeeId("emp-9")).contains(wallet);
+        assertThat(store.findByEmployeeId("nobody")).isEmpty();
+    }
+
+    @Test
     void savingSecondWalletForSameEmployeeThrowsConflict() {
 
         store.save(Wallet.enrollProduct("emp-1"));

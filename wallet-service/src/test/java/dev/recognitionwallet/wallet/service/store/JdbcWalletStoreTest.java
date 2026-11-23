@@ -30,6 +30,15 @@ class JdbcWalletStoreTest {
     private static final Instant CREATED =
             Instant.parse("2026-09-29T10:00:00Z");
 
+   @Test
+   void findByEmployeeIdLoadsFromPostgres(){
+        Wallet wallet = Wallet.enroll("emp-5", CREATED);
+        store.save(wallet);
+
+        assertThat(store.findByEmployeeId("emp-5")).contains(wallet);
+        assertThat(store.findByEmployeeId("nobody")).isEmpty();
+   }
+
     @Test
     void savedActiveWalletRoundtripsThroughPostgres() {
         Wallet wallet = Wallet.enrollProduct("emp-1", CREATED);

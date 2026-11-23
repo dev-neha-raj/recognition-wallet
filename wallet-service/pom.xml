@@ -19,6 +19,9 @@
     <name>wallet-service</name>
     <description>Wallet Service</description>
 
+    <properties>
+    <apicurio.version>3.0.6</apicurio.version>
+    </properties>
     <dependencies>
 
         <!-- Internal modules -->
@@ -32,6 +35,18 @@
             <groupId>dev.recognitionwallet</groupId>
             <artifactId>wallet-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>dev.recognitionwallet</groupId>
+            <artifactId>wallet-events</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.apicurio</groupId>
+            <artifactId>apicurio-registry-avro-serde-kafka</artifactId>
+            <version>3.0.6</version>
         </dependency>
 
         <!-- Runtime dependencies -->
@@ -95,6 +110,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <scope>test</scope>
+        </dependency>
+
 
         <!-- Testcontainers: real postgres for the boot test-->
         <dependency>

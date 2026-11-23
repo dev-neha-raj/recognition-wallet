@@ -34,4 +34,9 @@ return wallet;
 public Optional<Wallet> findById(UUID id){
     return Optional.ofNullable(byId.get(id));
 }
+
+@Override
+public Optional<Wallet> findByEmployeeId(String employeeId) {
+    return Optional.ofNullable(employeeIndex.get(employeeId)).map(byId::get);
+    }
 }
